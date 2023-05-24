@@ -42,7 +42,7 @@ public class SimpleTaskletSource implements Tasklet, StepExecutionListener {
         // creating the message to send
         final String locPayload = (String) locParameters.get("value");
         final Message<String> locPartitionKey = MessageBuilder.withPayload(locPayload)
-                                                             .setHeader("custom_info", "start")
+                                                             .setHeader("   ", "start")
                                                              .build();
         log.info("Message to send : " + locPayload);
         source.output().send(locPartitionKey);

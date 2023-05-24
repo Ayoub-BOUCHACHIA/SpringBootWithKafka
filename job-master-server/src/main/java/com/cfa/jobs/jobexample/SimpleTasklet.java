@@ -13,6 +13,8 @@ import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 
+import com.cfa.objects.lettre.Lettre;
+
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -47,10 +49,12 @@ public class SimpleTasklet implements Tasklet, StepExecutionListener {
 
         // creating the message to send
         final String locPayload = (String) locParameters.get("value");
-        final Message<String> locPartitionKey = MessageBuilder.withPayload(locPayload)
+        Lettre lettre = new Lettre();
+        lettre.setMessage(locPayload);
+        final Message<Lettre> locPartitionKey = MessageBuilder.withPayload(lettre)
                                                              .setHeader("custom_infoExo", "start")
                                                              .build();
-        log.info("Message Exo to send : " + locPayload);
+        log.info("Message Exo to send : " + lettre);
         sourceExo.output().send(locPartitionKey);
 
         return RepeatStatus.FINISHED;

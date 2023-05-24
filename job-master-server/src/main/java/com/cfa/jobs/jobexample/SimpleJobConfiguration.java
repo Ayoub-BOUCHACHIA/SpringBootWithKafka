@@ -56,5 +56,12 @@ public class SimpleJobConfiguration {
       .build();
   }
 
+  // public Step stepBatchExo() {
+    // return this.stepBuilderFactory.get("stepBatchExo")
+    // .reader(new SimpleReader())
+    // .processor(new SimpleProcessor())
+    // .writer(new SimpleWriter())
+    // .build();
+  // }
 
 }

@@ -22,6 +22,7 @@ public class JobController {
 
   private final JobLauncher jobLauncher;
   private final Job simpleJob;
+  private final Job simpleJobExo;
 
   @RequestMapping("/example")
   public void simpleJob(@RequestParam(value = "label") final String label) {
@@ -45,7 +46,7 @@ public class JobController {
 
   @RequestMapping("/exampleExo")
   public void simpleJobExo(@RequestParam(value = "label") final String label) {
-    runJobBExo(this.simpleJob, label);
+    runJobBExo(this.simpleJobExo, label);
   }
 
   private void runJobBExo(final Job parJob, final String label) {
