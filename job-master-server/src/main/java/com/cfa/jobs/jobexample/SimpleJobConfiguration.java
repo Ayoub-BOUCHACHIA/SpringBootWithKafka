@@ -9,6 +9,11 @@ import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.cfa.jobs.jobexample.RPW.*;
+import java.util.List;
+import com.cfa.objects.lettre.Lettre;
+import com.cfa.objects.lettre.LettreRepository;
+
 /**
  * Configuration example for creating a job & Step with tasklet
  */
@@ -21,6 +26,9 @@ public class SimpleJobConfiguration {
   public StepBuilderFactory stepBuilderFactory;
   @Autowired
   private Source sources;
+
+  @Autowired
+  private LettreRepository repository;
 
   @Bean
   public Job simpleJob() {
@@ -38,13 +46,14 @@ public class SimpleJobConfiguration {
       .build();
   }
 
-
-
   @Bean
   public Job simpleJobExo() {
     return jobBuilderFactory
       .get("simpleJobExo")
       .start(simpleStepExo())
+      .next(stepBatchExo())
+      .next(simpleStep())
+      .next(PrintStep())
       .build();
   }
 
@@ -56,12 +65,23 @@ public class SimpleJobConfiguration {
       .build();
   }
 
-  // public Step stepBatchExo() {
-    // return this.stepBuilderFactory.get("stepBatchExo")
-    // .reader(new SimpleReader())
-    // .processor(new SimpleProcessor())
-    // .writer(new SimpleWriter())
-    // .build();
-  // }
+
+  public Step stepBatchExo() {
+    return this.stepBuilderFactory.get("stepBatchExo")
+    .<String, Lettre>chunk(1)
+    .reader(new ItemReaderSimple())
+    .processor(new ItemProcessorSimple())
+    .writer(new ItemWriterSimple(this.repository))
+    .build();
+  }
+
+  @Bean
+  public Step PrintStep() {
+    return this.stepBuilderFactory
+      .get("PrintStep")
+      .tasklet(new PrintTasklet(sources, this.repository))
+      .build();
+  }
+
 
 }

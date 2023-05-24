@@ -10,7 +10,9 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.cfa.objects.lettre.LettreRepository;
+import com.cfa.objects.lettre.Lettre;
+import java.util.Collection;
 /**
  * Controller to launch jobs from an API call
  */
@@ -23,6 +25,7 @@ public class JobController {
   private final JobLauncher jobLauncher;
   private final Job simpleJob;
   private final Job simpleJobExo;
+  private final LettreRepository repository;
 
   @RequestMapping("/example")
   public void simpleJob(@RequestParam(value = "label") final String label) {
@@ -45,8 +48,9 @@ public class JobController {
 
 
   @RequestMapping("/exampleExo")
-  public void simpleJobExo(@RequestParam(value = "label") final String label) {
+  public Collection<Lettre> simpleJobExo(@RequestParam(value = "label") final String label) {
     runJobBExo(this.simpleJobExo, label);
+    return repository.findAll();
   }
 
   private void runJobBExo(final Job parJob, final String label) {
