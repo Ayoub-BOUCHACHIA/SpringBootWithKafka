@@ -46,13 +46,14 @@ public class SimpleJobConfiguration {
       .build();
   }
 
+
+  // Job Exo 1
   @Bean
   public Job simpleJobExo() {
     return jobBuilderFactory
       .get("simpleJobExo")
-      .start(simpleStepExo())
-      .next(stepBatchExo())
-      .next(simpleStep())
+      // .start(simpleStepExo()) // parite 1 convert string to lettre and send it to worker
+      .start(stepBatchExo())
       .next(PrintStep())
       .build();
   }
@@ -65,7 +66,7 @@ public class SimpleJobConfiguration {
       .build();
   }
 
-
+  @Bean
   public Step stepBatchExo() {
     return this.stepBuilderFactory.get("stepBatchExo")
     .<String, Lettre>chunk(1)
@@ -83,5 +84,27 @@ public class SimpleJobConfiguration {
       .build();
   }
 
+
+
+  //Exo 2 
+
+  @Bean
+  public Job simpleJobExo2() {
+    return jobBuilderFactory
+      .get("simpleJobExo2")
+      .start(stepBatchExo2())
+      .next(PrintStep())
+      .build();
+  }
+
+  @Bean
+  public Step stepBatchExo2() {
+    return this.stepBuilderFactory.get("stepBatchExo2")
+    .<String, Lettre>chunk(10)
+    .reader(new ItemFileReaderSimple("job-master-server/src/main/resources/data.txt"))
+    .processor(new ItemProcessorSimple())
+    .writer(new ItemWriterSimple(this.repository))
+    .build();
+  }
 
 }

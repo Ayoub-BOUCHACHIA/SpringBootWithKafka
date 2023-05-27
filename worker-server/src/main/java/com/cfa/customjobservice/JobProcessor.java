@@ -27,8 +27,8 @@ public class JobProcessor {
       .setHeader("custom_info", "end")
       .build();
 
-    log.info("[Worker START END] sending message to MASTER SERVER");
-    // _processor.output().send(locMessageEnd);
+    log.info("[Worker START END] sending message to MASTER SERVER : "+ locMessageEnd);
+    // this._processor.output().send(locMessageEnd);
   }
 
   @StreamListener(target = Processor.INPUT, condition = "headers['custom_infoExo']=='start'")
@@ -38,9 +38,9 @@ public class JobProcessor {
     final Message<String> locMessageEnd = MessageBuilder.withPayload(locPayload)
       .setHeader("custom_infoExo", "end")
       .build();
-
-    log.info("[Worker Exo START END] sending message to MASTER SERVER");
-    // _processor.output().send(locMessageEnd);
+  
+    log.info("[Worker Exo START END] sending message to MASTER SERVER : " + locMessageEnd);
+    // this._processor.output().send(locMessageEnd);
   }
 
 

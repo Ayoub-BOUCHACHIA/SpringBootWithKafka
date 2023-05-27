@@ -43,7 +43,7 @@ public class PrintTasklet implements Tasklet, StepExecutionListener {
         Collection<Lettre> lettres =  repository.findAll();
 
         final Message<Collection<Lettre>> locPartitionKey = MessageBuilder.withPayload(lettres)
-                                                             .setHeader("custom_info", "startPrint")
+                                                             .setHeader("custom_infoExo", "start")
                                                              .build();
         log.info("Print lettres : " + lettres);
         sourceExo.output().send(locPartitionKey);

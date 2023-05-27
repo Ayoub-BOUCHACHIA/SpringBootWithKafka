@@ -25,6 +25,7 @@ public class JobController {
   private final JobLauncher jobLauncher;
   private final Job simpleJob;
   private final Job simpleJobExo;
+  private final Job simpleJobExo2;
   private final LettreRepository repository;
 
   @RequestMapping("/example")
@@ -64,6 +65,26 @@ public class JobController {
       jobLauncher.run(parJob, locParamJobParametersExo);
     } catch (Exception ex) {
       log.error("[RUN JOBExo ERROR] : " + ex.getMessage());
+    }
+  }
+
+
+  @RequestMapping("/exampleExo2")
+  public Collection<Lettre> simpleJobExo2() {
+    runJobBExo2(this.simpleJobExo2);
+    return repository.findAll();
+  }
+
+  private void runJobBExo2(final Job parJob) {
+    final JobParameters locParamJobParametersExo2 = new JobParametersBuilder()
+      .addParameter("time", new JobParameter(System.currentTimeMillis()))
+      .toJobParameters();
+
+    try {
+      log.info("[JobExo2] running . . .");
+      jobLauncher.run(parJob, locParamJobParametersExo2);
+    } catch (Exception ex) {
+      log.error("[RUN JOBExo2 ERROR] : " + ex.getMessage());
     }
   }
 }

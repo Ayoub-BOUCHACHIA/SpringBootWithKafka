@@ -52,7 +52,7 @@ public class SimpleTasklet implements Tasklet, StepExecutionListener {
         Lettre lettre = new Lettre();
         lettre.setMessage(locPayload);
         final Message<Lettre> locPartitionKey = MessageBuilder.withPayload(lettre)
-                                                             .setHeader("custom_infoExo", "start")
+                                                             .setHeader("custom_info", "start")
                                                              .build();
         log.info("Message Exo to send : " + lettre);
         sourceExo.output().send(locPartitionKey);
