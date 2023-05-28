@@ -3,6 +3,7 @@ package com.cfa.configs.hazelcast.deserializer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.nustaq.serialization.FSTConfiguration;
+import org.springframework.util.SerializationUtils;
 
 /**
  * Deserializer configuration
@@ -16,6 +17,6 @@ public final class CustomDeserializer<T> implements Deserializer<T> {
   @SuppressWarnings("unchecked")
   @Override
   public T deserialize(String s, byte[] bytes) {
-    return null == bytes ? null : (T)conf.get().asObject(bytes);
+    return null == bytes ? null : (T) SerializationUtils.deserialize(bytes);
   }
 }

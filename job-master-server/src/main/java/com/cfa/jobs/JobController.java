@@ -26,6 +26,7 @@ public class JobController {
   private final Job simpleJob;
   private final Job simpleJobExo;
   private final Job simpleJobExo2;
+  private final Job simpleJobExo2Chunk; 
   private final LettreRepository repository;
 
   @RequestMapping("/example")
@@ -48,7 +49,7 @@ public class JobController {
   }
 
 
-  @RequestMapping("/exampleExo")
+  @RequestMapping("/exampleExo") // http://127.0.0.1:7777/v1/jobcontroller/exampleExo?label=example
   public Collection<Lettre> simpleJobExo(@RequestParam(value = "label") final String label) {
     runJobBExo(this.simpleJobExo, label);
     return repository.findAll();
@@ -69,7 +70,7 @@ public class JobController {
   }
 
 
-  @RequestMapping("/exampleExo2")
+  @RequestMapping("/exampleExo2") // http://127.0.0.1:7777/v1/jobcontroller/exampleExo2
   public Collection<Lettre> simpleJobExo2() {
     runJobBExo2(this.simpleJobExo2);
     return repository.findAll();
@@ -85,6 +86,26 @@ public class JobController {
       jobLauncher.run(parJob, locParamJobParametersExo2);
     } catch (Exception ex) {
       log.error("[RUN JOBExo2 ERROR] : " + ex.getMessage());
+    }
+  }
+
+
+  @RequestMapping("/exampleExo2Chunk") // http://127.0.0.1:7777/v1/jobcontroller/exampleExo2Chunk
+  public Collection<Lettre> simpleJobExo2Chunk() {
+    simpleJobExo2Chunk(this.simpleJobExo2Chunk);
+    return repository.findAll();
+  }
+
+  private void simpleJobExo2Chunk(final Job parJob) {
+    final JobParameters locParamJobParametersExo2Chunk = new JobParametersBuilder()
+      .addParameter("time", new JobParameter(System.currentTimeMillis()))
+      .toJobParameters();
+
+    try {
+      log.info("[JobExo2Chunk] running . . .");
+      jobLauncher.run(parJob, locParamJobParametersExo2Chunk);
+    } catch (Exception ex) {
+      log.error("[RUN JobExo2Chunk ERROR] : " + ex.getMessage());
     }
   }
 }
